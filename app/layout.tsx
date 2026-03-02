@@ -10,6 +10,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <CustomCursor /> {/* This activates the ribbon globally */}
+        {children}
+      </body>
+    </html>
+  );
+}
         <CursorAnimation /> {/* Place it here, outside the main content */}
         {children}
       </body>
