@@ -1,26 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { FloatingLines } from '@/components/floating-lines';
 import { SplitText } from '@/components/split-text';
 import { AuthModal } from '@/components/auth-modal';
 import { useUser, type UserRole } from '@/lib/user-context';
-import { ChevronDown, ShieldCheck, ArrowRight, Lock, ShoppingCart } from 'lucide-react';
+import { ChevronDown, ShieldCheck, ArrowRight, Lock } from 'lucide-react';
 
 export default function Home() {
   const [selectedRole, setSelectedRole] = useState<UserRole>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useUser();
-  const [mounted, setMounted] = useState(false);
-
-  // Handle hydration to prevent flicker
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
 
   // --- POST-LOGIN "ACCESS GRANTED" VIEW ---
   if (user) {
@@ -45,12 +37,12 @@ export default function Home() {
             Welcome, {user.name}
           </h1>
           <p className="text-slate-400 mb-8 text-sm">
-            Access authorized for encrypted <span className="text-blue-400 uppercase font-bold">{user.role}</span> protocols.
+            Access authorized for encrypted <span className="text-magenta-400 uppercase">{user.role}</span> protocols.
           </p>
 
           <Link
             href={user.role === 'buyer' ? '/dashboard' : '/inventory'}
-            className="group flex items-center justify-center w-full bg-gradient-to-r from-slate-700 to-slate-800 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 rounded-xl transition-all duration-300 border border-slate-600 shadow-lg"
+            className="group flex items-center justify-center w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-cyan-500/20"
           >
             INITIALIZE INTERFACE
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -62,9 +54,9 @@ export default function Home() {
 
   // --- LANDING & ROLE SELECTION VIEW ---
   return (
-    <div className="bg-[#0A0A0B] text-slate-200 min-h-screen">
+    <div className="bg-[#0A0A0B] text-slate-200">
       <FloatingLines />
-      <div className="w-full overflow-hidden">
+      <div className="min-h-screen w-full overflow-hidden">
         
         {/* Welcome Section */}
         <section className="min-h-screen w-full flex items-center justify-center relative">
@@ -102,7 +94,7 @@ export default function Home() {
         </section>
 
         {/* Role Selection Section */}
-        <section className="min-h-screen w-full flex flex-col items-center justify-center relative px-4 pb-20 font-mono">
+        <section className="min-h-screen w-full flex items-center justify-center relative px-4 pb-20">
           <div className="max-w-6xl mx-auto w-full">
             <motion.div
               className="text-center mb-16"
@@ -111,91 +103,68 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Select Identity</h2>
-              <p className="text-slate-500 text-sm">System Registry: 24BCE1363</p>
+              <p className="text-slate-500">Choose your interface to bridge with the local ecosystem.</p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-8 relative">
+            <div className="grid md:grid-cols-2 gap-8">
               
-              {/* Shared Background Scan Animation Logic */}
-              <AnimatePresence>
-                {selectedRole && (
-                  <motion.div
-                    key="scan-animation"
-                    className="absolute inset-0 pointer-events-none z-0 overflow-hidden rounded-2xl"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    <motion.div
-                      className={`absolute inset-x-0 h-1 blur-sm ${
-                        selectedRole === 'buyer' ? 'bg-blue-500' : 'bg-red-500'
-                      }`}
-                      animate={{ y: ["-10%", "1100%"] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Buyer Card (Blue) */}
+              {/* Buyer Card */}
               <motion.div
-                className="relative group cursor-pointer z-10"
+                className="relative group cursor-pointer"
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                onHoverStart={() => setSelectedRole('buyer')}
-                onHoverEnd={() => setSelectedRole(null)}
                 onClick={() => { setSelectedRole('buyer'); setShowAuthModal(true); }}
               >
-                <div className="absolute inset-0 bg-blue-500/5 rounded-2xl blur-2xl group-hover:bg-blue-500/10 transition-all" />
-                <div className="relative bg-slate-900/40 border border-slate-800 group-hover:border-blue-500/50 rounded-2xl p-8 backdrop-blur-md transition-all duration-500">
+                <div className="absolute inset-0 bg-cyan-500/5 rounded-2xl blur-2xl group-hover:bg-cyan-500/10 transition-all" />
+                <div className="relative bg-slate-900/40 border border-slate-800 group-hover:border-cyan-500/50 rounded-2xl p-8 backdrop-blur-md transition-all duration-500">
                   <div className="flex justify-between items-start mb-8">
-                    <div className="p-4 bg-blue-500/10 rounded-xl text-blue-400 border border-slate-700 group-hover:border-blue-500/50 transition-colors">
+                    <div className="p-4 bg-cyan-500/10 rounded-xl text-cyan-400">
                       <ShoppingCart className="w-8 h-8" />
                     </div>
-                    <ShieldCheck className="w-5 h-5 text-slate-700 group-hover:text-blue-500 transition-colors" />
+                    <ShieldCheck className="w-5 h-5 text-slate-700 group-hover:text-cyan-500 transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Buyer Portal</h3>
-                  <p className="text-slate-400 text-sm mb-8 font-light tracking-wide">Securely browse local inventory and initiate secure WhatsApp handshakes.</p>
+                  <p className="text-slate-400 text-sm mb-8">Securely browse local inventory and initiate WhatsApp-bridged orders.</p>
                   
                   <ul className="space-y-3 mb-10 text-sm text-slate-500">
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Live Neighborhood Catalog</li>
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Identity Masking Protocols</li>
+                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-cyan-500" /> Real-time Inventory Feeds</li>
+                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-cyan-500" /> Encrypted Direct Messaging</li>
+                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-cyan-500" /> Order History Analytics</li>
                   </ul>
 
-                  <div className="w-full py-3 bg-slate-800 text-slate-300 group-hover:bg-blue-600 group-hover:text-white text-center font-bold rounded-lg transition-all duration-300">
+                  <div className="w-full py-3 bg-slate-800 group-hover:bg-cyan-500 group-hover:text-slate-950 text-center font-bold rounded-lg transition-all">
                     Access Marketplace
                   </div>
                 </div>
               </motion.div>
 
-              {/* Seller Card (Red) */}
+              {/* Seller Card */}
               <motion.div
-                className="relative group cursor-pointer z-10"
+                className="relative group cursor-pointer"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                onHoverStart={() => setSelectedRole('seller')}
-                onHoverEnd={() => setSelectedRole(null)}
                 onClick={() => { setSelectedRole('seller'); setShowAuthModal(true); }}
               >
-                <div className="absolute inset-0 bg-red-500/5 rounded-2xl blur-2xl group-hover:bg-red-500/10 transition-all" />
-                <div className="relative bg-slate-900/40 border border-slate-800 group-hover:border-red-500/50 rounded-2xl p-8 backdrop-blur-md transition-all duration-500">
+                <div className="absolute inset-0 bg-magenta-500/5 rounded-2xl blur-2xl group-hover:bg-magenta-500/10 transition-all" />
+                <div className="relative bg-slate-900/40 border border-slate-800 group-hover:border-magenta-500/50 rounded-2xl p-8 backdrop-blur-md transition-all duration-500">
                   <div className="flex justify-between items-start mb-8">
-                    <div className="p-4 bg-red-500/10 rounded-xl text-red-500 border border-slate-700 group-hover:border-red-500/50 transition-colors">
+                    <div className="p-4 bg-magenta-500/10 rounded-xl text-magenta-400">
                       <Lock className="w-8 h-8" />
                     </div>
-                    <ShieldCheck className="w-5 h-5 text-slate-700 group-hover:text-red-500 transition-colors" />
+                    <ShieldCheck className="w-5 h-5 text-slate-700 group-hover:text-magenta-500 transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Seller Dashboard</h3>
-                  <p className="text-slate-400 text-sm mb-8 font-light tracking-wide">Convert Sheets into storefronts and manage secure neighborhood fulfillments.</p>
+                  <p className="text-slate-400 text-sm mb-8">Manage inventory via Google Sheets and fulfill neighborhood orders.</p>
                   
                   <ul className="space-y-3 mb-10 text-sm text-slate-500">
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-red-500" /> Zero-Maintenance Storefront</li>
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-red-500" /> Direct-to-WhatsApp Bridge</li>
+                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-magenta-500" /> Sheets-to-Store Sync</li>
+                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-magenta-500" /> Dynamic Price Gating</li>
+                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-magenta-500" /> Identity Masking Protocols</li>
                   </ul>
 
-                  <div className="w-full py-3 bg-slate-800 text-slate-300 group-hover:bg-red-600 group-hover:text-white text-center font-bold rounded-lg transition-all duration-300">
+                  <div className="w-full py-3 bg-slate-800 group-hover:bg-magenta-500 group-hover:text-slate-950 text-center font-bold rounded-lg transition-all">
                     Access Seller Vault
                   </div>
                 </div>
@@ -214,3 +183,6 @@ export default function Home() {
     </div>
   );
 }
+
+// Sub-components used in page.tsx (Ensure these icons are imported from lucide-react)
+import { ShoppingCart } from 'lucide-react';
