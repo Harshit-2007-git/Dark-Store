@@ -21,6 +21,7 @@ export default function Home() {
 
   if (!mounted) return null;
 
+  // --- SUCCESS VIEW (Once Logged In) ---
   if (user) {
     return (
       <motion.div
@@ -40,7 +41,7 @@ export default function Home() {
           </div>
 
           <h1 className="text-3xl font-bold mb-2 text-white">
-            Welcome, {user.name}
+            Welcome, {user.name || 'Harshit'}
           </h1>
           <p className="text-slate-400 mb-8 text-sm">
             Access authorized for encrypted <span className="text-blue-400 uppercase font-bold">{user.role}</span> protocols.
@@ -58,18 +59,16 @@ export default function Home() {
     );
   }
 
+  // --- LANDING VIEW ---
   return (
     <div className="bg-[#0A0A0B] text-slate-200 min-h-screen">
       <FloatingLines />
       <div className="w-full overflow-hidden">
         
+        {/* Hero Section */}
         <section className="min-h-screen w-full flex items-center justify-center relative">
           <div className="text-center px-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-            >
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }}>
               <SplitText
                 text="Dark Store Bridge"
                 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tighter"
@@ -79,43 +78,31 @@ export default function Home() {
 
             <motion.p
               className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-12 font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 0.8 }}
             >
               Secure, location-based product catalogs for local micro-sellers and student entrepreneurs.
             </motion.p>
 
-            <motion.div
-              className="flex flex-col items-center gap-2"
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
+            <motion.div className="flex flex-col items-center gap-2" animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }}>
               <ChevronDown className="w-6 h-6 text-slate-700" />
               <p className="text-[10px] uppercase tracking-[0.3em] text-slate-600">Identify to Proceed</p>
             </motion.div>
           </div>
         </section>
 
+        {/* Role Selection Section */}
         <section className="min-h-screen w-full flex flex-col items-center justify-center relative px-4 pb-20 font-mono">
           <div className="max-w-6xl mx-auto w-full">
-            <motion.div
-              className="text-center mb-16"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
+            <motion.div className="text-center mb-16" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
               <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Select Identity</h2>
               <p className="text-slate-500 text-sm">System Registry: 24BCE1363</p>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-8">
               
+              {/* Buyer Card (Blue Theme) */}
               <motion.div
                 className="relative group cursor-pointer"
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
                 onHoverStart={() => setSelectedRole('buyer')}
                 onHoverEnd={() => setSelectedRole(null)}
                 onClick={() => { setSelectedRole('buyer'); setShowAuthModal(true); }}
@@ -125,17 +112,10 @@ export default function Home() {
                   
                   <AnimatePresence>
                     {selectedRole === 'buyer' && (
-                      <motion.div 
-                        className="absolute inset-0 z-0 pointer-events-none"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
+                      <motion.div className="absolute inset-0 z-0 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <motion.div 
                           className="absolute inset-x-0 h-px bg-blue-400/50 shadow-[0_0_15px_rgba(96,165,250,0.5)]"
-                          initial={{ y: "0%" }}
-                          animate={{ y: "100%" }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                          initial={{ y: "0%" }} animate={{ y: "100%" }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                         />
                       </motion.div>
                     )}
@@ -151,12 +131,6 @@ export default function Home() {
                   <div className="relative z-10">
                     <h3 className="text-2xl font-bold text-white mb-2">Buyer Portal</h3>
                     <p className="text-slate-400 text-sm mb-8">Browse verified local inventory and initiate secure WhatsApp handshakes.</p>
-                    
-                    <ul className="space-y-3 mb-10 text-sm text-slate-500">
-                      <li className="flex items-center gap-3"><div className="w-1 h-1 rounded-full bg-blue-500" /> Live Neighborhood Catalog</li>
-                      <li className="flex items-center gap-3"><div className="w-1 h-1 rounded-full bg-blue-500" /> Identity Masking Protocols</li>
-                    </ul>
-
                     <div className="w-full py-3 bg-slate-800 text-slate-300 group-hover:bg-blue-600 group-hover:text-white text-center font-bold rounded-lg transition-all duration-300">
                       Access Marketplace
                     </div>
@@ -164,11 +138,9 @@ export default function Home() {
                 </div>
               </motion.div>
 
+              {/* Seller Card (Red Theme) */}
               <motion.div
                 className="relative group cursor-pointer"
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
                 onHoverStart={() => setSelectedRole('seller')}
                 onHoverEnd={() => setSelectedRole(null)}
                 onClick={() => { setSelectedRole('seller'); setShowAuthModal(true); }}
@@ -178,17 +150,10 @@ export default function Home() {
                   
                   <AnimatePresence>
                     {selectedRole === 'seller' && (
-                      <motion.div 
-                        className="absolute inset-0 z-0 pointer-events-none"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
+                      <motion.div className="absolute inset-0 z-0 pointer-events-none" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                         <motion.div 
                           className="absolute inset-x-0 h-px bg-red-400/50 shadow-[0_0_15px_rgba(248,113,113,0.5)]"
-                          initial={{ y: "0%" }}
-                          animate={{ y: "100%" }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                          initial={{ y: "0%" }} animate={{ y: "100%" }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                         />
                       </motion.div>
                     )}
@@ -204,12 +169,6 @@ export default function Home() {
                   <div className="relative z-10">
                     <h3 className="text-2xl font-bold text-white mb-2">Seller Dashboard</h3>
                     <p className="text-slate-400 text-sm mb-8">Convert Sheets into storefronts and manage secure neighborhood fulfillments.</p>
-                    
-                    <ul className="space-y-3 mb-10 text-sm text-slate-500">
-                      <li className="flex items-center gap-3"><div className="w-1 h-1 rounded-full bg-red-500" /> Zero-Maintenance Storefront</li>
-                      <li className="flex items-center gap-3"><div className="w-1 h-1 rounded-full bg-red-500" /> Direct-to-WhatsApp Bridge</li>
-                    </ul>
-
                     <div className="w-full py-3 bg-slate-800 text-slate-300 group-hover:bg-red-600 group-hover:text-white text-center font-bold rounded-lg transition-all duration-300">
                       Access Seller Vault
                     </div>
