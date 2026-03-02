@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { UserProvider } from '@/lib/user-context'
-import { CustomCursor } from '@/components/custom-cursor'
+import { CustomCursor } from '@/components/CustomCursor'
 import { CursorAnimation } from "@/components/cursor-animation";
 
 export default function RootLayout({ children }) {
