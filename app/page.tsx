@@ -2,12 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ShieldCheck, ArrowRight, Lock, ShoppingCart, X, User, Mail, Shield } from 'lucide-react';
+import { ChevronDown, ShieldCheck, ArrowRight, Lock, ShoppingCart, X, User, Mail, Shield, CheckCircle } from 'lucide-react';
 
 // --- 1. INTERNAL COMPONENT: GRADIENT BLINDS ---
-// We define this here to ensure it works without external CSS or file issues.
 const GradientBlinds = ({ role }: { role: 'buyer' | 'seller' | null }) => {
-  // Color sets: Neutral (Slate), Buyer (Cyan/Blue), Seller (Red)
   const colors = 
     role === 'seller' ? ['#7f1d1d', '#450a0a'] : 
     role === 'buyer' ? ['#0891b2', '#083344'] :  
@@ -73,10 +71,10 @@ export default function Home() {
   return (
     <main className="min-h-screen w-full relative overflow-hidden bg-black text-slate-100 font-mono">
       
-      {/* BACKGROUND LAYER: This is the Gradient Blinds logic */}
+      {/* BACKGROUND LAYER */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <GradientBlinds role={selectedRole} />
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
       </div>
 
       {/* CONTENT LAYER */}
@@ -101,7 +99,6 @@ export default function Home() {
                 <h2 className="text-4xl font-bold mb-16 text-white uppercase tracking-widest">Select Identity</h2>
                 <div className="grid md:grid-cols-2 gap-10 w-full max-w-5xl">
                   
-                  {/* Buyer Card */}
                   <motion.div 
                     onMouseEnter={() => setSelectedRole('buyer')} 
                     onMouseLeave={() => setSelectedRole(null)}
@@ -113,7 +110,6 @@ export default function Home() {
                     <p className="text-slate-400 text-sm font-light">Browse secure local inventory and establish bridges.</p>
                   </motion.div>
 
-                  {/* Seller Card */}
                   <motion.div 
                     onMouseEnter={() => setSelectedRole('seller')} 
                     onMouseLeave={() => setSelectedRole(null)}
@@ -124,7 +120,6 @@ export default function Home() {
                     <h3 className="text-2xl font-bold text-white mb-2 uppercase">Seller Vault</h3>
                     <p className="text-slate-400 text-sm font-light">Manage encrypted digital assets and neighborhood orders.</p>
                   </motion.div>
-
                 </div>
               </section>
             </motion.div>
@@ -146,4 +141,47 @@ export default function Home() {
                 <form onSubmit={handleAuthSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <label className="text-[10px] text-slate-500 uppercase tracking-widest flex items-center gap-2"><User size={12}/> Name</label>
-                    <input required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl focus:outline-none focus:border-white/40 text-white" placeholder="Enter Full Name
+                    <input required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl focus:outline-none focus:border-white/40 text-white" placeholder="Enter Full Name" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] text-slate-500 uppercase tracking-widest flex items-center gap-2"><Mail size={12}/> Registry Email</label>
+                    <input required type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl focus:outline-none focus:border-white/40 text-white" placeholder="your@email.com" />
+                  </div>
+                  <button type="submit" className={`w-full py-4 rounded-xl font-bold uppercase tracking-widest text-white transition-all ${selectedRole === 'seller' ? 'bg-red-600 hover:bg-red-500' : 'bg-cyan-600 hover:bg-cyan-500'}`}>Establish Bridge</button>
+                </form>
+              </div>
+            </motion.div>
+          )}
+
+          {/* --- DASHBOARD VIEW --- */}
+          {currentView === 'dashboard' && (
+            <motion.div 
+              key="dashboard" 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              className="min-h-screen p-8 md:p-12 flex flex-col items-center justify-center"
+            >
+              <div className={`w-full max-w-2xl p-12 rounded-3xl border backdrop-blur-3xl text-center ${selectedRole === 'seller' ? 'border-red-500 bg-red-950/10' : 'border-cyan-500 bg-cyan-950/10'}`}>
+                <CheckCircle size={64} className={`mx-auto mb-6 ${selectedRole === 'seller' ? 'text-red-500' : 'text-cyan-400'}`} />
+                <h1 className="text-4xl font-bold text-white mb-2">Bridge Established</h1>
+                <p className="text-slate-400 mb-8 uppercase tracking-widest text-xs">Subject: {formData.name} // Role: {selectedRole}</p>
+                <div className="grid grid-cols-2 gap-4 text-left">
+                    <div className="p-4 bg-white/5 rounded-xl border border-white/10">
+                        <p className="text-[10px] text-slate-500 uppercase">System Status</p>
+                        <p className="text-green-400 font-bold">Online</p>
+                    </div>
+                    <div className="p-4 bg-white/5 rounded-xl border border-white/10">
+                        <p className="text-[10px] text-slate-500 uppercase">Registry ID</p>
+                        <p className="text-white font-bold">24BCE1363</p>
+                    </div>
+                </div>
+                <button onClick={() => { setCurrentView('landing'); setSelectedRole(null); }} className="mt-10 text-xs text-slate-500 hover:text-white uppercase tracking-widest underline">Terminate Connection</button>
+              </div>
+            </motion.div>
+          )}
+
+        </AnimatePresence>
+      </div>
+    </main>
+  );
+}
