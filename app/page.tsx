@@ -8,13 +8,13 @@ import { SplitText } from '@/components/split-text';
 import { AuthModal } from '@/components/auth-modal';
 import { useUser, type UserRole } from '@/lib/user-context';
 import { ChevronDown, ShieldCheck, ArrowRight, Lock } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 
 export default function Home() {
   const [selectedRole, setSelectedRole] = useState<UserRole>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useUser();
 
-  // --- POST-LOGIN "ACCESS GRANTED" VIEW ---
   if (user) {
     return (
       <motion.div
@@ -52,13 +52,11 @@ export default function Home() {
     );
   }
 
-  // --- LANDING & ROLE SELECTION VIEW ---
   return (
     <div className="bg-[#0A0A0B] text-slate-200">
       <FloatingLines />
       <div className="min-h-screen w-full overflow-hidden">
         
-        {/* Welcome Section */}
         <section className="min-h-screen w-full flex items-center justify-center relative">
           <div className="text-center px-4">
             <motion.div
@@ -93,7 +91,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Role Selection Section */}
         <section className="min-h-screen w-full flex items-center justify-center relative px-4 pb-20">
           <div className="max-w-6xl mx-auto w-full">
             <motion.div
@@ -126,16 +123,6 @@ export default function Home() {
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Buyer Portal</h3>
                   <p className="text-slate-400 text-sm mb-8">Securely browse local inventory and initiate WhatsApp-bridged orders.</p>
-                  
-                  <ul className="space-y-3 mb-10 text-sm text-slate-500">
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-cyan-500" /> Real-time Inventory Feeds</li>
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-cyan-500" /> Encrypted Direct Messaging</li>
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-cyan-500" /> Order History Analytics</li>
-                  </ul>
-
-                  <div className="w-full py-3 bg-slate-800 group-hover:bg-cyan-500 group-hover:text-slate-950 text-center font-bold rounded-lg transition-all">
-                    Access Marketplace
-                  </div>
                 </div>
               </motion.div>
 
@@ -147,26 +134,22 @@ export default function Home() {
                 viewport={{ once: true }}
                 onClick={() => { setSelectedRole('seller'); setShowAuthModal(true); }}
               >
-                <div className="absolute inset-0 bg-magenta-500/5 rounded-2xl blur-2xl group-hover:bg-magenta-500/10 transition-all" />
-                <div className="relative bg-slate-900/40 border border-slate-800 group-hover:border-magenta-500/50 rounded-2xl p-8 backdrop-blur-md transition-all duration-500">
+                {/* 🔴 Animated Red Glow */}
+                <motion.div
+                  className="absolute inset-0 bg-red-500/10 rounded-2xl blur-2xl"
+                  animate={{ opacity: [0.3, 0.8, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+
+                <div className="relative bg-slate-900/40 border border-slate-800 group-hover:border-red-500/60 rounded-2xl p-8 backdrop-blur-md transition-all duration-500">
                   <div className="flex justify-between items-start mb-8">
-                    <div className="p-4 bg-magenta-500/10 rounded-xl text-magenta-400">
+                    <div className="p-4 bg-red-500/10 rounded-xl text-red-400 group-hover:bg-red-500/20 transition-all">
                       <Lock className="w-8 h-8" />
                     </div>
-                    <ShieldCheck className="w-5 h-5 text-slate-700 group-hover:text-magenta-500 transition-colors" />
+                    <ShieldCheck className="w-5 h-5 text-slate-700 group-hover:text-red-500 transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Seller Dashboard</h3>
                   <p className="text-slate-400 text-sm mb-8">Manage inventory via Google Sheets and fulfill neighborhood orders.</p>
-                  
-                  <ul className="space-y-3 mb-10 text-sm text-slate-500">
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-magenta-500" /> Sheets-to-Store Sync</li>
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-magenta-500" /> Dynamic Price Gating</li>
-                    <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-magenta-500" /> Identity Masking Protocols</li>
-                  </ul>
-
-                  <div className="w-full py-3 bg-slate-800 group-hover:bg-magenta-500 group-hover:text-slate-950 text-center font-bold rounded-lg transition-all">
-                    Access Seller Vault
-                  </div>
                 </div>
               </motion.div>
 
@@ -183,6 +166,3 @@ export default function Home() {
     </div>
   );
 }
-
-// Sub-components used in page.tsx (Ensure these icons are imported from lucide-react)
-import { ShoppingCart } from 'lucide-react';
