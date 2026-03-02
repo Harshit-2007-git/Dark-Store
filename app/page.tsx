@@ -87,6 +87,18 @@ export default function Home() {
           {currentView === 'landing' && (
             <motion.div key="landing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <section className="min-h-screen flex flex-col items-center justify-center text-center px-4">
+                import Ribbons from './Ribbons';
+
+<div style={{ height: '500px', position: 'relative', overflow: 'hidden'}}>
+  <Ribbons
+    baseThickness={30}
+    colors={["#5227FF"]}
+    speedMultiplier={0.5}
+    maxAge={500}
+    enableFade={false}
+    enableShaderEffect={false}
+  />
+</div>
                 <BlurText text="Dark Store Bridge" className="text-5xl md:text-8xl font-bold mb-6 tracking-tighter" />
                 <p className="text-slate-300 max-w-xl mb-12 uppercase tracking-[0.5em] text-[10px]">Registry: 24BCE1363 // Local Grid</p>
                 <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-white/40"><ChevronDown /></motion.div>
