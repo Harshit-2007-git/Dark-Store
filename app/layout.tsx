@@ -5,28 +5,6 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { UserProvider } from '@/lib/user-context'
 import { CustomCursor } from '@/components/CustomCursor'
-import { CursorAnimation } from "@/components/cursor-animation";
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        <CustomCursor /> {/* This activates the ribbon globally */}
-        {children}
-      </body>
-    </html>
-  );
-}
-        <CursorAnimation /> {/* Place it here, outside the main content */}
-        {children}
-      </body>
-    </html>
-  );
-}
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
@@ -62,12 +40,35 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased bg-black overflow-x-hidden">
         <UserProvider>
+          {/* NECESSARY CHANGE: Background Animation Layer */}
+          <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
+            <GradientBlinds
+              gradientColors={['#0F1115', '#5227FF']}
+              angle={0}
+              noise={0.3}
+              blindCount={12}
+              blindMinWidth={50}
+              spotlightRadius={0.5}
+              spotlightSoftness={1}
+              spotlightOpacity={1}
+              mouseDampening={0.15}
+              distortAmount={0}
+              shineDirection="left"
+              mixBlendMode="lighten"
+            />
+          </div>
+
           <CustomCursor />
-          {children}
+          
+          {/* NECESSARY CHANGE: Content wrapper to stay above background */}
+          <main className="relative z-10">
+            {children}
+          </main>
+          
+          <Analytics />
         </UserProvider>
-        <Analytics />
       </body>
     </html>
   )
