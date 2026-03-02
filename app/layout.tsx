@@ -4,6 +4,18 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { UserProvider } from '@/lib/user-context'
 import { CustomCursor } from '@/components/custom-cursor'
+import { CursorAnimation } from "@/components/cursor-animation";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <CursorAnimation /> {/* Place it here, outside the main content */}
+        {children}
+      </body>
+    </html>
+  );
+}
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
